@@ -69,11 +69,14 @@ const Container = () => {
 
   const addInputDataHandler = (data) => {
     setAPI((prevState) => {
+      if (prevState.length > 4) {
+        return;
+      }
       return [...prevState, data];
     });
   };
 
-  console.log(API, "addd");
+  console.log(API, "api added");
 
   ////////
 
@@ -108,6 +111,7 @@ const Container = () => {
           })}
           {modalOpen && (
             <InputForm
+              data={API}
               onAddData={addInputDataHandler}
               modalClose={modalCloseHandler}
             ></InputForm>

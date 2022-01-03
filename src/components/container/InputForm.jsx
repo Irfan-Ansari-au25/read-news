@@ -21,6 +21,9 @@ const InputForm = (props) => {
       id: Math.random().toString(),
     };
     console.log("entry", inputData);
+    if (props.length > 5) {
+      return;
+    }
     props.onAddData(inputData);
     props.modalClose(false);
   };
