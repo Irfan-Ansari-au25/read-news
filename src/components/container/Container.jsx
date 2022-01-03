@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import Card from "./Card";
 import axios from "axios";
 import AddButton from "./AddButton";
+import InputForm from "./InputForm";
 
 const url =
   "https://newsapi.org/v2/everything?q=apple&from=2022-01-02&to=2022-01-02&sortBy=popularity&apiKey=a5cf886a8dd84801a01c8b5bd0da1b0d";
@@ -19,7 +20,7 @@ const DUMMY = [
     title: "Business",
     id: "cat2",
   },
-  ,
+
   {
     api: "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a5cf886a8dd84801a01c8b5bd0da1b0d",
     title: "Wall Street Journal",
@@ -28,9 +29,12 @@ const DUMMY = [
 ];
 
 const Container = () => {
+  const [API, setAPI] = useState(DUMMY);
   const [post, setPost] = useState([]);
   const [catWiseData, setCatWiseData] = useState({ api: url });
   const [isActive, setIsActive] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const activeHandler = (state) => {
     setIsActive(state);
   };
@@ -40,7 +44,7 @@ const Container = () => {
     setCatWiseData(catData[0]);
   };
 
-  console.log("from catwisedata", catWiseData);
+  // console.log("from catwisedata", catWiseData);
 
   /////
   useEffect(() => {
@@ -48,19 +52,38 @@ const Container = () => {
     axios.get(catWiseData.api).then((response) => {
       setPost(response.data.articles);
 
-      console.log("response", post, typeof post);
+      // console.log("response", post, typeof post);
     });
   }, [catWiseData.api]);
 
+  ///
+  const openModalHandler = (state) => {
+    setModalOpen(state);
+  };
+
+  const modalCloseHandler = (state) => {
+    setModalOpen(state);
+  };
+
+  ////////add dataa
+
+  const addInputDataHandler = (data) => {
+    setAPI((prevState) => {
+      return [...prevState, data];
+    });
+  };
+
+  console.log(API, "addd");
+
   ////////
-  console.log("log from main");
+
   return (
     <div>
       <div className="section">
         <div className="container">
           <h1 className="heading mb-40">News Today</h1>
           <div className="flex mb-16">
-            {DUMMY.map((category) => {
+            {API.map((category) => {
               return (
                 <Button
                   key={category.id}
@@ -69,18 +92,26 @@ const Container = () => {
                   state={isActive}
                   title={category.title}
                   api={category.api}
-                  data={DUMMY}
+                  data={API}
                   addData={addDataHandler}
                 ></Button>
               );
             })}
-            <AddButton></AddButton>
+            <AddButton onOpen={openModalHandler}></AddButton>
           </div>
           <SearchBar></SearchBar>
           {post.map((article) => {
             // return <h1>{article.author}</h1>;
-            return <Card article={article}></Card>;
+            return (
+              <Card key={Math.random().toString(26)} article={article}></Card>
+            );
           })}
+          {modalOpen && (
+            <InputForm
+              onAddData={addInputDataHandler}
+              modalClose={modalCloseHandler}
+            ></InputForm>
+          )}
         </div>
       </div>
     </div>

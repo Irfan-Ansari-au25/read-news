@@ -1,7 +1,7 @@
 import React from "react";
 
 const Card = (props) => {
-  console.log("card", props);
+  // console.log("card", props);
   return (
     <div>
       <div className="news-card mb-32">
