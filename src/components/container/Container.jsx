@@ -34,6 +34,7 @@ const Container = () => {
   const [catWiseData, setCatWiseData] = useState({ api: url });
   const [isActive, setIsActive] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [filteredResults, setFilteredResults] = useState([]);
 
   const activeHandler = (state) => {
     setIsActive(state);
@@ -51,6 +52,7 @@ const Container = () => {
     console.log("here");
     axios.get(catWiseData.api).then((response) => {
       setPost(response.data.articles);
+      setFilteredResults(response.data.articles);
 
       // console.log("response", post, typeof post);
     });
@@ -80,6 +82,14 @@ const Container = () => {
 
   ////////
 
+  const handleFilterFn = (searchWord) => {
+    console.log("here", searchWord, post);
+    const newFilteredPosts = post.filter((p) => {
+      return p.title?.match(searchWord);
+    });
+    setFilteredResults(newFilteredPosts);
+  };
+
   return (
     <div>
       <div className="section">
@@ -102,11 +112,19 @@ const Container = () => {
             })}
             <AddButton onOpen={openModalHandler}></AddButton>
           </div>
-          <SearchBar data={post}></SearchBar>
-          {post.map((article) => {
+          <SearchBar
+            data={post}
+            filteredPosts={filteredResults}
+            filterFn={handleFilterFn}
+          ></SearchBar>
+          {filteredResults.map((article, index) => {
             // return <h1>{article.author}</h1>;
             return (
-              <Card key={Math.random().toString(26)} article={article}></Card>
+              <Card
+                key={Math.random().toString(26)}
+                i={index}
+                article={article}
+              ></Card>
             );
           })}
           {modalOpen && (

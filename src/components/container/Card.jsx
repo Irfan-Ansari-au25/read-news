@@ -6,7 +6,9 @@ const Card = (props) => {
     <div>
       <div className="news-card mb-32">
         <div className="left">
-          <h2 className="news-headline mb-16">{props.article.title}</h2>
+          <h2 className="news-headline mb-16">
+            {props.article.title} {props.i}
+          </h2>
           <div className="div-block-3 mb-16">
             <div className="author">{props.article.author}</div>
             <div className="div-block-2" />
