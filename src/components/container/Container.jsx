@@ -85,7 +85,7 @@ const Container = () => {
   const handleFilterFn = (searchWord) => {
     console.log("here", searchWord, post);
     const newFilteredPosts = post.filter((p) => {
-      return p.title?.match(searchWord);
+      return p.description?.match(searchWord) || p.author?.match(searchWord);
     });
     setFilteredResults(newFilteredPosts);
   };
@@ -117,14 +117,10 @@ const Container = () => {
             filteredPosts={filteredResults}
             filterFn={handleFilterFn}
           ></SearchBar>
-          {filteredResults.map((article, index) => {
+          {filteredResults.map((article) => {
             // return <h1>{article.author}</h1>;
             return (
-              <Card
-                key={Math.random().toString(26)}
-                i={index}
-                article={article}
-              ></Card>
+              <Card key={Math.random().toString(26)} article={article}></Card>
             );
           })}
           {modalOpen && (
