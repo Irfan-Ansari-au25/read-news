@@ -102,7 +102,7 @@ const Container = () => {
             })}
             <AddButton onOpen={openModalHandler}></AddButton>
           </div>
-          <SearchBar></SearchBar>
+          <SearchBar data={post}></SearchBar>
           {post.map((article) => {
             // return <h1>{article.author}</h1>;
             return (
